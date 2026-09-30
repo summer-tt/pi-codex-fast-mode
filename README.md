@@ -76,10 +76,11 @@ Both conditions must hold:
 
 ```text
 provider == openai-codex
-model    == /^gpt-5\.(4|5|6)(?:$|-)/ or one of gpt-6-sol, gpt-6-luna, gpt-6-astra
+model    == /^gpt-5\.(4|5|6)(?:$|-)/ or one of gpt-6-sol, gpt-6-luna,
+           gpt-6-astra, gpt-6.1-sol
 ```
 
-The GPT-5 matcher accepts bare IDs and named variants such as `gpt-5.6-sol`. GPT-6 eligibility is an exact allowlist for `gpt-6-sol`, `gpt-6-luna`, and `gpt-6-astra`; bare `gpt-6`, `gpt-6-future`, and other unlisted variants are excluded. This fork adds support for Sol, Luna, and Astra pending an upstream update.
+The GPT-5 matcher accepts bare IDs and named variants such as `gpt-5.6-sol`. GPT-6 eligibility is an exact allowlist for `gpt-6-sol`, `gpt-6-luna`, `gpt-6-astra`, and `gpt-6.1-sol`; bare `gpt-6`, `gpt-6.1`, `gpt-6-future`, and other unlisted variants are excluded. This fork adds support for Sol, Luna, Astra, and GPT-6.1 Sol pending an upstream update.
 
 | Model family | Expected speed | Credit usage |
 | --- | ---: | ---: |
@@ -87,6 +88,7 @@ The GPT-5 matcher accepts bare IDs and named variants such as `gpt-5.6-sol`. GPT
 | GPT-5.5 | about 1.5× | about 2.5× |
 | GPT-5.6 | about 1.5× | about 2.5× |
 | GPT-6 Sol, Luna, and Astra | not specified | about 2.5× |
+| GPT-6.1 Sol | not specified | about 2.5× |
 
 These are OpenAI's published figures from the [Codex speed documentation](https://developers.openai.com/codex/speed), not measurements taken here, and they can change. New GPT-6 variants require an explicit eligibility and pricing review before support is added. The GPT-6 enable notification omits a numeric speed claim. This package ships no benchmarks of its own; if you run one, see the reporting bar in [CONTRIBUTING.md](./CONTRIBUTING.md).
 

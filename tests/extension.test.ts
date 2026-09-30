@@ -132,7 +132,7 @@ describe("Codex Fast mode extension", () => {
 		expect(harness.notifications.at(-1)?.message).toContain("~1.5× speed");
 	});
 
-	it.each(["gpt-6-sol", "gpt-6-luna", "gpt-6-astra"])(
+	it.each(["gpt-6-sol", "gpt-6-luna", "gpt-6-astra", "gpt-6.1-sol"])(
 		"enables Fast mode for %s without an unsupported speed claim",
 		async (id) => {
 			const harness = await createHarness({ modelId: id });
@@ -159,7 +159,7 @@ describe("Codex Fast mode extension", () => {
 		},
 	);
 
-	it.each(["gpt-6", "gpt-6-future", "gpt-6-sol-preview"])(
+	it.each(["gpt-6", "gpt-6.1", "gpt-6-future", "gpt-6-sol-preview"])(
 		"keeps Fast mode inactive on unsupported %s",
 		async (id) => {
 			const harness = await createHarness({ modelId: id });

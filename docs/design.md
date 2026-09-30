@@ -44,7 +44,7 @@ Before each provider request:
 
 1. Exit without returning a payload when the preference is off.
 2. Require provider `openai-codex`.
-3. Require a GPT-5.4, GPT-5.5, or GPT-5.6 model ID, or exactly `gpt-6-sol`, `gpt-6-luna`, or `gpt-6-astra`.
+3. Require a GPT-5.4, GPT-5.5, or GPT-5.6 model ID, or exactly `gpt-6-sol`, `gpt-6-luna`, `gpt-6-astra`, or `gpt-6.1-sol`.
 4. Require a record-shaped payload.
 5. return a shallow copy with `service_tier: "priority"`.
 
@@ -66,10 +66,11 @@ The matcher is intentionally provider-scoped and family-based:
 
 ```text
 provider == openai-codex
-model    == /^gpt-5\.(4|5|6)(?:$|-)/ or one of gpt-6-sol, gpt-6-luna, gpt-6-astra
+model    == /^gpt-5\.(4|5|6)(?:$|-)/ or one of gpt-6-sol, gpt-6-luna,
+           gpt-6-astra, gpt-6.1-sol
 ```
 
-The GPT-5 family matcher accepts named variants such as `gpt-5.6-sol`. The GPT-6 allowlist accepts only Sol, Luna, and Astra; bare `gpt-6`, `gpt-6-future`, and unlisted suffixes are not eligible. Adding another variant requires an eligibility and pricing review and a code change.
+The GPT-5 family matcher accepts named variants such as `gpt-5.6-sol`. The GPT-6 allowlist accepts only Sol, Luna, Astra, and GPT-6.1 Sol; bare `gpt-6`, `gpt-6.1`, `gpt-6-future`, and unlisted suffixes are not eligible. Adding another variant requires an eligibility and pricing review and a code change.
 
 The `openai` API-key provider is excluded. API Priority Processing has separate billing and operational semantics and should not be enabled implicitly by a ChatGPT Codex extension.
 

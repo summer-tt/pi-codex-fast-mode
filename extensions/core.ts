@@ -3,7 +3,7 @@ export const FAST_SERVICE_TIER = "priority";
 export const EXPECTED_SPEED_MULTIPLIER = 1.5;
 
 const SUPPORTED_MODEL_PATTERN = /^gpt-5\.(4|5|6)(?:$|-)/;
-const SUPPORTED_GPT_6_MODELS = new Set(["gpt-6-sol", "gpt-6-luna", "gpt-6-astra"]);
+const SUPPORTED_GPT_6_MODELS = new Set(["gpt-6-sol", "gpt-6-luna", "gpt-6-astra", "gpt-6.1-sol"]);
 
 export interface ModelDescriptor {
 	readonly provider: string;

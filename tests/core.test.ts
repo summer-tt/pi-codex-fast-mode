@@ -22,6 +22,7 @@ describe("isFastEligible", () => {
 		"gpt-6-sol",
 		"gpt-6-luna",
 		"gpt-6-astra",
+		"gpt-6.1-sol",
 	])("accepts supported Codex model %s", (id) => {
 		expect(isFastEligible(codex(id))).toBe(true);
 	});
@@ -31,6 +32,9 @@ describe("isFastEligible", () => {
 		{ provider: "openai", id: "gpt-6-sol" },
 		{ provider: "openai-codex", id: "gpt-5.3-codex" },
 		{ provider: "openai-codex", id: "gpt-6" },
+		{ provider: "openai-codex", id: "gpt-6.1" },
+		{ provider: "openai-codex", id: "gpt-6.1-luna" },
+		{ provider: "openai-codex", id: "gpt-6.1-sol-preview" },
 		{ provider: "openai-codex", id: "gpt-6-future" },
 		{ provider: "openai-codex", id: "gpt-6-sol-preview" },
 		{ provider: "openai-codex", id: "gpt-6x" },
@@ -46,13 +50,13 @@ describe("getFastCreditMultiplier", () => {
 		expect(getFastCreditMultiplier(codex("gpt-5.4"))).toBe(2);
 	});
 
-	it.each(["gpt-5.5", "gpt-5.6-sol", "gpt-6-sol", "gpt-6-luna", "gpt-6-astra"])(
+	it.each(["gpt-5.5", "gpt-5.6-sol", "gpt-6-sol", "gpt-6-luna", "gpt-6-astra", "gpt-6.1-sol"])(
 		"uses the documented multiplier for %s",
 		(id) => {
 			expect(getFastCreditMultiplier(codex(id))).toBe(2.5);
 		},
 	);
-	it.each(["gpt-6", "gpt-6-future", "gpt-6-sol-preview"])(
+	it.each(["gpt-6", "gpt-6.1", "gpt-6-future", "gpt-6-sol-preview"])(
 		"does not estimate cost or speed for unsupported %s",
 		(id) => {
 			expect(getFastCreditMultiplier(codex(id))).toBeUndefined();
@@ -61,6 +65,7 @@ describe("getFastCreditMultiplier", () => {
 	);
 	it("does not claim a published speed multiplier for GPT-6", () => {
 		expect(getFastSpeedMultiplier(codex("gpt-6-sol"))).toBeUndefined();
+		expect(getFastSpeedMultiplier(codex("gpt-6.1-sol"))).toBeUndefined();
 		expect(getFastSpeedMultiplier(codex("gpt-5.6-sol"))).toBe(1.5);
 	});
 });
@@ -109,16 +114,19 @@ describe("applyFastServiceTier", () => {
 		expect(payload).not.toHaveProperty("service_tier");
 	});
 
-	it.each(["gpt-6-sol", "gpt-6-luna", "gpt-6-astra"])("adds priority for %s", (id) => {
-		const payload = { model: id };
-		const result = applyFastServiceTier(payload, true, codex(id));
-		expect(result.applied).toBe(true);
-		if (!result.applied) throw new Error("Expected Fast mode to apply");
-		expect(result.payload).toEqual({ model: id, service_tier: "priority" });
-		expect(payload).not.toHaveProperty("service_tier");
-	});
+	it.each(["gpt-6-sol", "gpt-6-luna", "gpt-6-astra", "gpt-6.1-sol"])(
+		"adds priority for %s",
+		(id) => {
+			const payload = { model: id };
+			const result = applyFastServiceTier(payload, true, codex(id));
+			expect(result.applied).toBe(true);
+			if (!result.applied) throw new Error("Expected Fast mode to apply");
+			expect(result.payload).toEqual({ model: id, service_tier: "priority" });
+			expect(payload).not.toHaveProperty("service_tier");
+		},
+	);
 
-	it.each(["gpt-6", "gpt-6-future", "gpt-6-sol-preview"])(
+	it.each(["gpt-6", "gpt-6.1", "gpt-6-future", "gpt-6-sol-preview"])(
 		"does not modify unsupported %s requests",
 		(id) => {
 			const payload = { model: id };
